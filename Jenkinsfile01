@@ -1,0 +1,76 @@
+pipeline {
+  agent any
+  options {
+    buildDiscarder(logRotator(numToKeepStr: '5'))
+  }
+  environment {
+	APP_NAME = "laptop-shop"
+    DOCKERHUB_CREDENTIALS = credentials('dockerhub-cred')
+	//once you sign up for Docker hub, use that user_id here
+	registry = "your_docker_user_id/${APP_NAME}"
+	//- update your credentials ID after creating credentials for connecting to Docker Hub
+	registryCredential = '' //DOCKER HUB TOKEN
+	dockerImage = '${APP_NAME}:${BUILD_NUMBER}'
+  }
+  stages {
+      stage("Env Variables") {
+            steps {
+                sh "printenv"
+            }
+        }
+      stage('Cloning Git') {
+            steps {
+                checkout([$class: 'GitSCM',
+                branches: [[name: '*/master']],
+                doGenerateSubmoduleConfigurations: false,
+                extensions: [], submoduleCfg: [],
+                userRemoteConfigs: [[credentialsId: '',
+                url: 'https://github.com/purab/laptop-shop-spring-boot-sample-code']]])
+            }
+        }
+      stage('Build JAR') {
+        steps {
+            sh './gradlew build'
+        }
+      }
+      stage('Build') {
+      steps {
+          sh 'docker build -t purabdk/${APP_NAME}:${BUILD_NUMBER} .'
+      }
+    }
+	// Uploading Docker images into Docker Hub
+    stage('Upload Image') {
+     steps{
+         script {
+            docker.withRegistry( 'https://hub.docker.com', registryCredential ) {
+            dockerImage.push()
+            }
+        }
+      }
+	// Stopping Docker containers for cleaner Docker run
+     stage('docker stop container') {
+         steps {
+            sh 'docker ps -f name=${APP_NAME} -q | xargs --no-run-if-empty docker container stop'
+            sh 'docker container ls -a -fname=${APP_NAME} -q | xargs -r docker container rm'
+         }
+       }
+    // Running Docker container, make sure port 8096 is opened in
+    stage('Docker Run') {
+     steps{
+         script {
+            dockerImage.run("-p 8096:5000 --rm --name ${APP_NAME}")
+         }
+      }
+    }
+
+  }
+  post {
+    always {
+         script {
+            if (getContext(hudson.FilePath)) {
+                deleteDir()
+            }
+        }
+    }
+  }
+}
