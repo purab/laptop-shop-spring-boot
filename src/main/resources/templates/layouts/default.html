@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head th:replace="fragments/head :: head"></head>
+<body>
+<div class="container">
+    <div th:replace="fragments/header :: header"></div>
+
+    <div class="row">
+        <div class="col-8">
+            <div layout:fragment="content"></div>
+        </div>
+        <div class="col-4">col-4</div>
+    </div>
+    <div th:replace="fragments/footer :: footer"></div>
+</div>
+</body>
+</html>
