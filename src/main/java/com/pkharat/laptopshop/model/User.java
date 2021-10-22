@@ -6,6 +6,9 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -18,11 +21,21 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer userId;
 
     private String username;
 
     private String password;
+
+    private String firstname;
+
+    private String lastname;
+
+    private String address;
+
+    private String city;
+
+    private String postalCode;
 
     private boolean isEnabled;
 
@@ -31,4 +44,8 @@ public class User {
 
     @ManyToMany
     private Set<Role> roles;
+
+   
+
+
 }
