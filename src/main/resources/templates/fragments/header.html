@@ -9,16 +9,29 @@
         <ul class="navbar-nav">
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="/" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Actions
+              Laptop Orders
             </a>
             <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
-              <li><a class="dropdown-item" href="/login">Action</a></li>
-              <li><a class="dropdown-item" href="/registration">registration</a></li>
-              <li><a class="dropdown-item" href="/logout">Logout</a></li>
+              <li sec:authorize="isAuthenticated()"><a class="dropdown-item" href="/laptops">laptops</a></li>
+              <li sec:authorize="isAuthenticated()"><a class="dropdown-item" href="/orders">orders</a></li>              
+            </ul>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="/" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              User Actions
+            </a>
+            <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
+              <li sec:authorize="!isAuthenticated()"><a class="dropdown-item" href="/login">Login</a></li>
+              <li sec:authorize="!isAuthenticated()"><a class="dropdown-item" href="/registration">registration</a></li>
+              <li sec:authorize="isAuthenticated()"><a class="dropdown-item" href="/logout">Logout</a></li>
             </ul>
           </li>
         </ul>
       </div>
     </div>
-  </nav>
+  </nav>  
   </div>
+  
+  
+  
+       

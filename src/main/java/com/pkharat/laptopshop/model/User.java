@@ -10,19 +10,21 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.HashSet;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
 @Entity
-@Table(name ="user")
+@Table(name ="users")
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer userId;
 
+    @Column(unique = true)
     private String username;
 
     private String password;
@@ -37,13 +39,20 @@ public class User {
 
     private String postalCode;
 
-    private boolean isEnabled;
+    private boolean enabled;
 
     @Transient
     private String passwordConfirm;
 
-    @ManyToMany
-    private Set<Role> roles;
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JoinTable(
+			name ="users_roles",
+			joinColumns = @JoinColumn(name="user_id"),
+			inverseJoinColumns = @JoinColumn(name="role_id")
+			)
+	private Set<Role> roles = new HashSet<Role>();
+
+	
 
    
 

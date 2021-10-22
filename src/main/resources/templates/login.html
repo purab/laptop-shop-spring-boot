@@ -15,6 +15,8 @@
 
             <input name="password" type="password" class="form-control" placeholder="Password"/>
             <span class="has-error" th:text="${error}"></span>
+            
+            <input type="checkbox" name="remember-me" /> Remember Me
 
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 

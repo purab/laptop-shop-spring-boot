@@ -65,6 +65,8 @@ public class MyUserDetails implements UserDetails {
     public boolean isEnabled() {
         // TODO Auto-generated method stub
         return user.isEnabled();
+    	
+        
     }
 
 }

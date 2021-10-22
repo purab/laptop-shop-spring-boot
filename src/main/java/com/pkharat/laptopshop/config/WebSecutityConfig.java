@@ -1,5 +1,6 @@
 package com.pkharat.laptopshop.config;
 
+import com.pkharat.laptopshop.model.User;
 import com.pkharat.laptopshop.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -11,30 +12,34 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
 
 @Configuration
 @EnableWebSecurity
 public class WebSecutityConfig extends WebSecurityConfigurerAdapter {
 
-    @Qualifier("userDetailsServiceImpl")
-    @Autowired
-    public UserDetailsService userDetailsService;
+	@Bean
+	public UserDetailsService userDetailsService() {
+		return new UserDetailsServiceImpl();
+	}
 
+	@Bean
+	public BCryptPasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
+    
     @Bean
-    public BCryptPasswordEncoder bCryptPasswordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-    @Bean
-    public DaoAuthenticationProvider authenticationProvider() {
-        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setPasswordEncoder(bCryptPasswordEncoder());
-        authProvider.setUserDetailsService(userDetailsService());
-        return authProvider;
-    }
+	public DaoAuthenticationProvider authenticationProvider() {
+		DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+		authProvider.setPasswordEncoder(passwordEncoder());
+		authProvider.setUserDetailsService(userDetailsService());
+		return authProvider;
+	}
+    
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -47,8 +52,13 @@ public class WebSecutityConfig extends WebSecurityConfigurerAdapter {
                 .loginPage("/login")
                 .permitAll()
                 .and()
+             .rememberMe()
+                .tokenValiditySeconds(7 * 24 * 60 * 60) // expiration time: 7 days
+                .key("AbcdefghiJklmNoPqRstUvXyz")   // cookies will survive if restarted
+            	.and()
             .logout()
-                .permitAll();
+                .permitAll()
+                .logoutSuccessUrl("/login");
     }
 
     @Bean
@@ -56,10 +66,7 @@ public class WebSecutityConfig extends WebSecurityConfigurerAdapter {
         return authenticationManager();
     }
 
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder());
-    }
+    
 
 
 }

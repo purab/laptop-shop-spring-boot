@@ -13,15 +13,21 @@ import java.util.Set;
 @NoArgsConstructor
 @ToString
 @Entity
-@Table(name = "role")
+@Table(name = "roles")
 public class Role {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     private String name;
 
-    @ManyToMany(mappedBy = "roles")
-    private Set<User> users;
+    /*@ManyToMany(mappedBy = "roles")
+    private Set<User> users;*/
+	
+	
+	public Role(String name) {
+		super();
+		this.name = name;
+	}
 }

@@ -1,5 +1,6 @@
 package com.pkharat.laptopshop.service;
 
+import com.pkharat.laptopshop.model.Role;
 import com.pkharat.laptopshop.model.User;
 import com.pkharat.laptopshop.repository.RoleRepository;
 import com.pkharat.laptopshop.repository.UserRepository;
@@ -24,13 +25,20 @@ public class UserServiceImpl implements UserService {
     @Override
     public void save(User user) {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        user.setUsername(user.getUsername());
         user.setEnabled(true);
-        user.setRoles(new HashSet<>(roleRepository.findAll()));
+        
+        Role role = new Role("ADMIN");
+		Role role1 = new Role("USER");		
+		
+		user.getRoles().add(role);
+		user.getRoles().add(role1);        
+        
         userRepository.save(user);
     }
 
     @Override
     public User findByUsername(String username) {
-        return userRepository.findByUsername(username);
+        return userRepository.getUserByUsername(username);
     }
 }

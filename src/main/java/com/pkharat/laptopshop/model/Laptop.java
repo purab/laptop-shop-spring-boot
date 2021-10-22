@@ -16,7 +16,7 @@ import java.util.Set;
 @NoArgsConstructor
 @ToString
 @Entity
-@Table(name="laptop")
+@Table(name="laptops")
 public class Laptop {
 
     @Id
