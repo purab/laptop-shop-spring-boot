@@ -21,13 +21,16 @@ public class Laptop {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer laptopId;
+    private Long laptopId;
 
     private String type;
 
     private String size;
 
+    @Column(name = "price")
     private String price;
+    
+    
     
 
 }
