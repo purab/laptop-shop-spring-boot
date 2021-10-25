@@ -38,7 +38,7 @@ public class LaptopServiceImpl implements LaptopService{
 		if (optional.isPresent()) {
 			laptop = optional.get();
 		} else {
-			throw new RuntimeException(" Employee not found for id :: " + id);
+			throw new RuntimeException(" Laptop not found for id :: " + id);
 		}
 		return laptop;
 	}

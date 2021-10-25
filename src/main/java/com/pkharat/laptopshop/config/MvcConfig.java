@@ -20,8 +20,8 @@ public class MvcConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new LoginInterceptors());
-        registry.addInterceptor(new SessionTimerInterceptor());
+        //registry.addInterceptor(new LoginInterceptors());
+       // registry.addInterceptor(new SessionTimerInterceptor());
     }
 
 }

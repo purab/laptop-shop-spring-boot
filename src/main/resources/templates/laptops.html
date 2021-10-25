@@ -36,6 +36,27 @@
 					<td th:text="${laptop.price}"></td>
 					<td> <a th:href="@{/showFormForUpdate/{id}(id=${laptop.laptopId})}" class="btn btn-primary">Update</a>
 					    <a th:href="@{/deleteLaptop/{id}(id=${laptop.laptopId})}" class="btn btn-danger">Delete</a>
+					   
+				<form action="#" th:action="@{/orderLaptop/{laptopId}(laptopId=${laptop.laptopId})}" method="POST">
+				
+				<input type="hidden" th:field="${laptop.type}"
+				placeholder="Laptop Type" class="form-control mb-4 col-4">
+				
+				<input type="hidden" th:field="${laptop.size}"
+				placeholder="Laptop Size" class="form-control mb-4 col-4">
+				
+				<input type="hidden" th:field="${laptop.price}"
+				placeholder="Laptop Price" class="form-control mb-4 col-4">
+			
+					<select class="form-select" aria-label="Default select example" name="quantity">
+					  <option selected>Open this select menu</option>
+					  <option value="1">One</option>
+					  <option value="2">Two</option>
+					  <option value="3">Three</option>
+					</select>
+					<button type="submit" class="btn btn-info "> Order Laptops</button>
+					</form>
+					   
 					</td>
 				</tr>
 			</tbody>

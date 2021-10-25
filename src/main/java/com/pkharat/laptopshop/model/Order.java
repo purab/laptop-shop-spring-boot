@@ -20,11 +20,13 @@ public class Order {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer orderNo;
+    private Long orderNo;
 
     private Date startDate;
 
     private Integer amountPaid;
+    
+    private Integer quantity;
 
     private boolean status;
 

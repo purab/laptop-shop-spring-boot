@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layouts/default">
+<body>
+<div id="page" layout:fragment="content">
+
+	<div class="container my-2">
+	<h1>Orders List</h1>
+	
+	<a th:href = "@{/showNewOrderForm}" class="btn btn-primary btn-sm mb-3"> Add Order </a>
+	
+		<table border="1" class = "table table-striped table-responsive-md">
+			<thead>
+				<tr>
+					<th>
+						<a th:href="@{'/orderpage/' + ${currentPage} + '?sortField=type&sortDir=' + ${reverseSortDir}}">
+							Order Type</a>
+					</th>
+					<th>
+					<a th:href="@{'/orderpage/' + ${currentPage} + '?sortField=size&sortDir=' + ${reverseSortDir}}">
+							Order Size</a>
+					</th>
+					<th>
+					<a th:href="@{'/orderpage/' + ${currentPage} + '?sortField=price&sortDir=' + ${reverseSortDir}}">
+							Order Price</a>
+					</th>
+					<th> Actions </th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="order : ${listOrders}">
+					<td th:text="${order.ammount_paid}"></td>
+					<td th:text="${order.start_date}"></td>
+					<td th:text="${order.status}"></td>
+					<td> <a th:href="@{/order/showFormForUpdate/{id}(id=${order.orderId})}" class="btn btn-primary">Update</a>
+					    <a th:href="@{/order/deleteOrder/{id}(id=${order.orderId})}" class="btn btn-danger">Delete</a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		
+		<div th:if = "${totalPages > 1}">
+			<div class = "row col-sm-10">
+				<div class = "col-sm-2">
+					Total Rows: [[${totalItems}]] 
+				</div>
+				<div class = "col-sm-1">
+					<span th:each="i: ${#numbers.sequence(1, totalPages)}">
+						<a th:if="${currentPage != i}" th:href="@{'/page/' + ${i}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">[[${i}]]</a>
+						<span th:unless="${currentPage != i}">[[${i}]]</span>  &nbsp; &nbsp;
+					</span>
+				</div>
+				<div class = "col-sm-1">
+					<a th:if="${currentPage < totalPages}" th:href="@{'/page/' + ${currentPage + 1}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Next</a>
+					<span th:unless="${currentPage < totalPages}">Next</span>
+				</div>
+				
+				 <div class="col-sm-1">
+    				<a th:if="${currentPage < totalPages}" th:href="@{'/page/' + ${totalPages}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Last</a>
+					<span th:unless="${currentPage < totalPages}">Last</span>
+   				 </div>
+			</div>
+		</div>
+	</div>
+	</div>
+</body>
+</html>

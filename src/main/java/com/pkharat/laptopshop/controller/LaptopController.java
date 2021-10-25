@@ -27,6 +27,8 @@ public class LaptopController {
 	
 	@GetMapping("/laptops")
 	public String listLaptops(Model model) {
+		Laptop laptop = new Laptop();
+		model.addAttribute("laptop", laptop);
 		return findPaginated(1, "type", "asc", model);	
 	}
 	
